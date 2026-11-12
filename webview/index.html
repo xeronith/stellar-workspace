@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src {{cspSource}} data:; style-src {{cspSource}} 'unsafe-inline'; script-src 'nonce-{{nonce}}';"
+    />
+    <link rel="stylesheet" href="{{styleUri}}" />
+    <title>Stellar Workspace</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene"></canvas>
+      <div class="vignette"></div>
+      <div class="scanlines"></div>
+
+      <header class="hud-top">
+        <div class="brand">
+          <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <defs>
+              <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#5ceaff" />
+                <stop offset="1" stop-color="#ff64d8" />
+              </linearGradient>
+            </defs>
+            <path d="M24 3.5 42.5 14v20L24 44.5 5.5 34V14Z" fill="none" stroke="url(#brandGrad)" stroke-width="1.6" />
+            <path d="M24 12.5 34 18v11.5L24 35.5 14 29.5V18Z" fill="none" stroke="#5ceaff" stroke-width="0.9" opacity="0.65" />
+            <circle cx="24" cy="24" r="2.6" fill="#eafcff" />
+            <circle cx="24" cy="24" r="6" fill="none" stroke="#5ceaff" stroke-width="0.7" opacity="0.45" />
+          </svg>
+          <div class="brand-copy">
+            <h1>STELLAR <span>//</span> WORKSPACE</h1>
+            <div class="subline">
+              <span class="pulse-dot"></span>
+              <span id="workspace-name">ACQUIRING SIGNAL</span>
+              <span class="sep">·</span>
+              <span id="status-text">BOOT</span>
+            </div>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button id="btn-refresh" class="btn" type="button">
+            <span class="btn-glyph">⟳</span> RESCAN
+          </button>
+          <button id="btn-reset" class="btn" type="button">
+            <span class="btn-glyph">⌖</span> RESET VIEW
+          </button>
+        </div>
+      </header>
+
+      <aside class="panel stats-panel">
+        <div class="panel-label">SYSTEM TELEMETRY</div>
+        <div class="stat-grid">
+          <div class="stat"><span id="stat-files">—</span><small>FILES</small></div>
+          <div class="stat"><span id="stat-dirs">—</span><small>NODES</small></div>
+          <div class="stat"><span id="stat-size">—</span><small>MASS</small></div>
+          <div class="stat"><span id="stat-depth">—</span><small>DEPTH</small></div>
+        </div>
+        <div class="panel-label comp-label">COMPOSITION</div>
+        <div id="composition" class="composition">
+          <div class="comp-empty">AWAITING TELEMETRY</div>
+        </div>
+        <div id="truncated" class="truncated" hidden>◈ TRUNCATED SCAN — TOP 3.5K FILES</div>
+      </aside>
+
+      <aside class="panel legend-panel">
+        <div class="panel-label">LEGEND</div>
+        <div class="legend-row"><span class="dot folder"></span> DIRECTORY CRYSTAL</div>
+        <div class="legend-row"><span class="dot code"></span> CODE MOTE</div>
+        <div class="legend-row"><span class="dot data"></span> DATA / CONFIG</div>
+        <div class="legend-row"><span class="dot media"></span> MEDIA</div>
+        <div class="legend-row"><span class="dot doc"></span> DOCUMENT</div>
+        <div class="panel-label comp-label">NAVIGATION</div>
+        <div class="hint-line">DRAG — ORBIT</div>
+        <div class="hint-line">SCROLL — ZOOM</div>
+        <div class="hint-line">CLICK CRYSTAL — FOCUS</div>
+        <div class="hint-line">CLICK MOTE — OPEN FILE</div>
+      </aside>
+
+      <div id="tooltip" class="tooltip" hidden>
+        <div id="tooltip-kind" class="tooltip-kind">DIRECTORY</div>
+        <div id="tooltip-name" class="tooltip-name">—</div>
+        <div id="tooltip-meta" class="tooltip-meta">—</div>
+      </div>
+
+      <section id="detail" class="panel detail-panel" hidden>
+        <div class="detail-head">
+          <div class="detail-heading">
+            <div class="panel-label">TARGET LOCKED</div>
+            <h2 id="detail-name">—</h2>
+            <div id="detail-path" class="detail-path">—</div>
+          </div>
+          <button id="detail-close" class="icon-btn" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="detail-stats">
+          <div><b id="detail-files">0</b><small>FILES</small></div>
+          <div><b id="detail-dirs">0</b><small>SUBDIRS</small></div>
+          <div><b id="detail-size">0 B</b><small>SIZE</small></div>
+        </div>
+        <div class="detail-actions">
+          <button id="detail-reveal" class="btn" type="button">REVEAL IN EXPLORER</button>
+        </div>
+      </section>
+
+      <footer class="hud-bottom">
+        <div class="controls-hint">
+          <span class="key">LMB</span> ORBIT
+          <span class="divider">/</span>
+          <span class="key">RMB</span> PAN
+          <span class="divider">/</span>
+          <span class="key">WHEEL</span> ZOOM
+        </div>
+        <div class="build">RENDER CORE · THREE.JS · <span id="fps">--</span> FPS</div>
+      </footer>
+
+      <div id="loader" class="loader">
+        <div class="loader-rings"><i></i><i></i><i></i></div>
+        <div class="loader-title">MAPPING WORKSPACE</div>
+        <div id="loader-status" class="loader-status">INITIALIZING OPTICAL ARRAY</div>
+      </div>
+
+      <div id="error" class="error-card" hidden>
+        <div class="panel-label">SIGNAL LOST</div>
+        <p id="error-message">Unable to scan this workspace.</p>
+        <button id="error-retry" class="btn" type="button">RETRY SCAN</button>
+      </div>
+    </div>
+    <script nonce="{{nonce}}" src="{{scriptUri}}"></script>
+  </body>
+</html>

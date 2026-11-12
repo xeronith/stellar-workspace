@@ -1,0 +1,61 @@
+{
+  "name": "stellar-workspace",
+  "displayName": "Stellar Workspace",
+  "description": "A sci-fi 3D map of your workspace. Folders become glowing crystals, files become orbital data motes.",
+  "version": "0.0.1",
+  "publisher": "xeronith",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "3d",
+    "three.js",
+    "workspace",
+    "visualization",
+    "sci-fi",
+    "graph"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "stellarWorkspace.show",
+        "title": "Open 3D Workspace Map",
+        "category": "Stellar Workspace",
+        "icon": "$(symbol-structure)"
+      },
+      {
+        "command": "stellarWorkspace.refresh",
+        "title": "Refresh 3D Map",
+        "category": "Stellar Workspace",
+        "icon": "$(refresh)"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "check": "tsc --noEmit",
+    "package": "vsce package --no-dependencies --no-rewrite-relative-links"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/three": "^0.187.0",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "^4.1.0",
+    "esbuild": "^0.28.2",
+    "three": "^0.187.0",
+    "typescript": "^7.0.2"
+  },
+  "galleryBanner": {
+    "color": "#02040A",
+    "theme": "dark"
+  }
+}
