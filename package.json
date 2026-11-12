@@ -2,7 +2,7 @@
   "name": "stellar-workspace",
   "displayName": "Stellar Workspace",
   "description": "A sci-fi 3D map of your workspace. Folders become glowing crystals, files become orbital data motes.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "xeronith",
   "license": "MIT",
   "engines": {
